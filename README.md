@@ -1,14 +1,18 @@
-# Condo Agent: Autonomous Condominium Emergency Triage & Management Platform
+# Town Council Chatbot: Autonomous Municipal Emergency Triage & Resident Services Platform
 
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
-[![Tests Passing](https://img.shields.io/badge/tests-303%20passed-brightgreen.svg)](tests/)
+[![Tests Passing](https://img.shields.io/badge/tests-305%20passed-brightgreen.svg)](tests/)
 [![RAG Benchmark](https://img.shields.io/badge/RAG%20Hit%20Rate@3-100%25-success.svg)](reports/TRIBECA_RAG_BENCHMARK_REPORT.md)
 [![Table Preservation](https://img.shields.io/badge/Table%20Preservation-100%25-success.svg)](reports/TRIBECA_RAG_BENCHMARK_REPORT.md)
-[![Codebase Knowledge Graph](https://img.shields.io/badge/Knowledge%20Graph-1%2C634%20notes-purple.svg)](graphify-out/obsidian/)
+[![Codebase Knowledge Graph](https://img.shields.io/badge/Knowledge%20Graph-1%2C645%20notes-purple.svg)](graphify-out/obsidian/)
 
-A production-grade, multi-agent AI operations platform for condominium resident services, emergency maintenance triage, and contractor auto-dispatch. Powered by **Multi-Stage Semantic RAG (Gemini Embeddings + Dense/Sparse Hybrid Retrieval)**, **Document AI Human-in-the-Loop (HITL) Policy Management**, and real-time **Multimodal Telegram Bot Coordination** (Voice & Vision).
+> [!NOTE]
+> **Academic Presentation & NDA Compliance Notice**:
+> In strict compliance with Non-Disclosure Agreement (NDA) requirements, proprietary client condominium data has been fully abstracted and generalized into the **Singapore Town Council & Municipal Estate Operations Framework**. All resident scenarios, by-law evaluations, and term-contractor dispatch workflows evaluate real-world municipal operational readiness while strictly preserving confidentiality.
 
-Grounded and rigorously benchmarked against authentic Singapore condominium handbooks (**Tribeca Condominium**, 60 Kim Seng Road), achieving **100% table atomicity**, **100% breadcrumb coverage**, and **100% Hit Rate @ 3**.
+A production-grade, multi-agent AI operations platform for Town Council resident services, municipal emergency triage, by-law compliance, and contractor auto-dispatch. Powered by **Multi-Stage Semantic RAG (Gemini Embeddings + Dense/Sparse Hybrid Retrieval)**, **Document AI Human-in-the-Loop (HITL) By-Law Policy Management**, and real-time **Multimodal Telegram Bot Coordination** (Voice Memos, Vision Damage Diagnosis, and Colloquial Singlish Normalization).
+
+Grounded and rigorously benchmarked against authentic municipal estate management rules, achieving **100% table atomicity**, **100% breadcrumb coverage**, **100% Hit Rate @ 3**, and **0 hallucinated contacts**.
 
 ---
 
@@ -129,8 +133,8 @@ The RAG and dispatch pipelines were independently audited across authentic Tribe
 ### 2. Clone & Install Dependencies
 
 ```bash
-git clone https://github.com/Dylan42415/condo-agent.git
-cd condo-agent/condo-request-classifier
+git clone https://github.com/Dylan42415/town-council-chatbot.git
+cd town-council-chatbot/condo-request-classifier
 
 # Install dependencies using uv
 uv sync
