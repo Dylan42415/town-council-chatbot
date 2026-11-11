@@ -679,41 +679,63 @@ def build_deck() -> Path:
 
     # Right: Visual Diff & Audit Trail
     add_card(s7, Inches(6.9), Inches(1.6), Inches(5.6), Inches(4.5), CARD_BG)
-    add_badge(s7, Inches(7.2), Inches(1.9), Inches(5.0), Inches(0.4), "GOVERNANCE, AUDIT TRAIL & ROLLBACK", CARD_ALT, BLUE_TAG, 12)
+    add_badge(s7, Inches(7.2), Inches(1.85), Inches(5.0), Inches(0.35), "GOVERNANCE, AUDIT TRAIL & ROLLBACK", CARD_ALT, BLUE_TAG, 11)
 
-    # Simulated Visual Diff Box
-    add_card(s7, Inches(7.1), Inches(2.5), Inches(5.2), Inches(1.9), CARD_ALT)
-    tb_diff = s7.shapes.add_textbox(Inches(7.2), Inches(2.55), Inches(5.0), Inches(1.8))
+    # 1. Officer Prompt Input Box (What user typed in)
+    add_card(s7, Inches(7.1), Inches(2.3), Inches(5.2), Inches(1.05), CARD_ALT)
+    tb_prompt = s7.shapes.add_textbox(Inches(7.2), Inches(2.33), Inches(5.0), Inches(0.98))
+    tf_prompt = tb_prompt.text_frame
+    tf_prompt.word_wrap = True
+    p_pr1 = tf_prompt.paragraphs[0]
+    p_pr1.text = "💬 Officer Natural Language Amendment Prompt:"
+    p_pr1.font.bold = True
+    p_pr1.font.size = Pt(10)
+    p_pr1.font.color.rgb = AMBER
+
+    p_pr2 = tf_prompt.add_paragraph()
+    p_pr2.text = '"When booking a barbecue pit, Resident shall deposit from $150.00 per pit to 300$"'
+    p_pr2.font.italic = True
+    p_pr2.font.size = Pt(10)
+    p_pr2.font.color.rgb = WHITE
+
+    p_pr3 = tf_prompt.add_paragraph()
+    p_pr3.text = "🎯 AI Auto-Navigates To: Recreational Facilities > Barbecue Area (Clause 5)"
+    p_pr3.font.size = Pt(9)
+    p_pr3.font.color.rgb = BLUE_TAG
+
+    # 2. Simulated Visual Diff Box
+    add_card(s7, Inches(7.1), Inches(3.45), Inches(5.2), Inches(1.15), CARD_ALT)
+    tb_diff = s7.shapes.add_textbox(Inches(7.2), Inches(3.48), Inches(5.0), Inches(1.1))
     tf_diff = tb_diff.text_frame
     tf_diff.word_wrap = True
     p_df1 = tf_diff.paragraphs[0]
-    p_df1.text = "🔍 GitHub-Style Visual Diff Preview:"
+    p_df1.text = "🔍 Surgical GitHub-Style Visual Diff Preview:"
     p_df1.font.bold = True
-    p_df1.font.size = Pt(11)
+    p_df1.font.size = Pt(10)
     p_df1.font.color.rgb = WHITE
 
     p_del = tf_diff.add_paragraph()
     p_del.text = "- 5. When booking BBQ pit, deposit sum of $150.00 per pit..."
-    p_del.font.size = Pt(11)
+    p_del.font.size = Pt(9.5)
     p_del.font.color.rgb = CORAL
 
     p_add = tf_diff.add_paragraph()
     p_add.text = "+ 5. When booking BBQ pit, deposit sum of $300.00 per pit..."
-    p_add.font.size = Pt(11)
+    p_add.font.size = Pt(9.5)
     p_add.font.color.rgb = MINT
 
     p_df2 = tf_diff.add_paragraph()
-    p_df2.text = "Result: Exactly +1 Addition, -1 Deletion (0 Spurious Micro-Diffs)"
-    p_df2.font.size = Pt(10)
+    p_df2.text = "✨ Surgical Output: Exactly +1 Addition, -1 Deletion (0 Spurious Micro-Diffs)"
+    p_df2.font.size = Pt(9)
     p_df2.font.color.rgb = MUTED
 
-    # Audit features
-    tb_gov = s7.shapes.add_textbox(Inches(7.1), Inches(4.55), Inches(5.2), Inches(1.4))
+    # 3. Audit features
+    tb_gov = s7.shapes.add_textbox(Inches(7.1), Inches(4.7), Inches(5.2), Inches(1.3))
     tf_gov = tb_gov.text_frame
     tf_gov.word_wrap = True
     gov_items = [
         ("Timestamped Backups: ", "Automated snapshot taken before any handbook write."),
-        ("Immutable Audit Log: ", "JSON log stores user intent, author, rationale, and diff."),
+        ("Immutable Audit Log: ", "JSON log stores user intent, officer prompt, and exact diff."),
         ("One-Click Instant Rollback: ", "Instantly restores original handbook state if a rule amendment is rescinded."),
     ]
     for i, (g_title, g_desc) in enumerate(gov_items):
@@ -721,11 +743,11 @@ def build_deck() -> Path:
         r1 = p.add_run()
         r1.text = "• " + g_title
         r1.font.bold = True
-        r1.font.size = Pt(11)
+        r1.font.size = Pt(10)
         r1.font.color.rgb = WHITE
         r2 = p.add_run()
         r2.text = g_desc
-        r2.font.size = Pt(11)
+        r2.font.size = Pt(10)
         r2.font.color.rgb = MUTED
 
     # Bottom Stat
