@@ -568,25 +568,25 @@ def build_deck() -> Path:
     add_card(s6, Inches(0.8), Inches(1.6), Inches(5.6), Inches(4.5), CARD_BG)
     add_badge(s6, Inches(1.1), Inches(1.9), Inches(5.0), Inches(0.4), "SEMANTIC CHUNKING INNOVATIONS", CARD_ALT, MINT, 12)
 
-    tb_r1 = s6.shapes.add_textbox(Inches(1.1), Inches(2.5), Inches(5.0), Inches(3.4))
+    tb_r1 = s6.shapes.add_textbox(Inches(1.1), Inches(2.45), Inches(5.0), Inches(3.5))
     tf_r1 = tb_r1.text_frame
     tf_r1.word_wrap = True
     rag_points = [
-        ("📄 Automated PDF-to-Markdown Ingestion: ", "Every time a user ingests a PDF handbook, it is automatically converted into clean Markdown (.md) to strip PDF layout bloat, drastically saving LLM input tokens and API costs."),
-        ("🔗 Sentence-Boundary Auto-Healing: ", "Municipal PDF handbooks frequently sever sentences across page breaks. Our pipeline heals severed splits automatically during markdown conversion before chunking."),
-        ("📊 100% Atomic Table Preservation: ", "Naïve chunking splits tables down the middle, severing tariffs. Our pipeline preserves markdown tables as 100% indivisible units."),
-        ("🧭 Hierarchical Breadcrumbs & Hybrid Search: ", "Enriches chunks with municipal breadcrumbs (`[TOWN COUNCIL > BY-LAWS]`) and fuses Gemini vector embeddings with BM25 keyword boosting."),
+        ("🏗️ Stage 1 — Structure-Aware Header Splitting: ", "Splits strictly by `#`, `##`, `###` hierarchy; preserves fee schedules and tariff tables as 100% indivisible atomic units."),
+        ("🧠 Stage 2 — Semantic Breakpoint Detection: ", "Calculates sentence-level cosine distance; long sections are split only where topics naturally shift, never severing clauses mid-thought."),
+        ("📄 PDF-to-Markdown & Auto-Healing: ", "Converts PDF handbooks to clean Markdown to strip visual bloat and save tokens; automatically re-links sentences broken by page transitions."),
+        ("🧭 Breadcrumb Tagging & Hybrid Search: ", "Stamps chunks with full context (`[TOWN COUNCIL > BY-LAWS > SECTION]`) and fuses Gemini embeddings with BM25 keyword boosting."),
     ]
     for i, (b_title, b_text) in enumerate(rag_points):
         p = tf_r1.paragraphs[0] if i == 0 else tf_r1.add_paragraph()
         run1 = p.add_run()
         run1.text = b_title
         run1.font.bold = True
-        run1.font.size = Pt(11)
+        run1.font.size = Pt(10.5)
         run1.font.color.rgb = WHITE
         run2 = p.add_run()
         run2.text = b_text
-        run2.font.size = Pt(11)
+        run2.font.size = Pt(10.5)
         run2.font.color.rgb = MUTED
 
     # Right: Benchmark Metrics Grid
@@ -636,13 +636,13 @@ def build_deck() -> Path:
 
     add_speaker_notes(
         s6,
-        "Slide 6 presents our Semantic RAG & Ingestion breakthroughs. "
-        "A critical engineering feature: every time a user ingests a PDF handbook or municipal document, "
-        "our pipeline automatically converts it into a clean Markdown file. "
-        "This strips away heavy PDF formatting and visual artifacts, saving significant input tokens and API costs. "
-        "Furthermore, our sentence-boundary healing re-links sentences split across page breaks, and our chunker "
-        "guarantees 100% table atomicity. "
-        "Our benchmark across 145 municipal chunks achieves a 100% Hit Rate @ 3 and an MRR of 0.9222 with zero hallucinations."
+        "Slide 6 presents our Grounded Municipal Semantic RAG and chunking strategy. "
+        "Unlike naive chunkers that slice text every 300 words, we use an intelligent Two-Stage Semantic Chunking Pipeline: "
+        "First, we convert incoming PDFs to Markdown to strip visual formatting and save LLM input tokens, healing any sentences broken across page transitions. "
+        "Stage 1 splits by Markdown headers (#, ##, ###) while preserving 100% of tariff tables intact as indivisible units. "
+        "Stage 2 uses semantic breakpoint detection, comparing adjacent sentences so long clauses are only divided when the topic naturally changes. "
+        "Finally, every chunk receives a hierarchical breadcrumb tag so the AI always knows which facility or by-law it belongs to. "
+        "Our benchmark across 145 municipal chunks achieves a 100% Hit Rate @ 3, an MRR of 0.9222, and zero hallucinations."
     )
 
     # =========================================================================
