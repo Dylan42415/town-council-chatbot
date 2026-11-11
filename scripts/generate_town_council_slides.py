@@ -158,24 +158,24 @@ def build_deck() -> Path:
     p_desc.font.size = Pt(16)
     p_desc.font.color.rgb = MUTED
 
-    # NDA Compliance Banner
+    # Core Capabilities Banner
     add_card(s1, Inches(0.8), Inches(5.3), Inches(6.8), Inches(1.4), CARD_BG, MINT)
-    tb_nda = s1.shapes.add_textbox(Inches(1.0), Inches(5.4), Inches(6.4), Inches(1.2))
-    tf_nda = tb_nda.text_frame
-    tf_nda.word_wrap = True
-    p_nda1 = tf_nda.paragraphs[0]
-    p_nda1.text = "🔒 Academic & Industry NDA Notice:"
-    p_nda1.font.bold = True
-    p_nda1.font.size = Pt(13)
-    p_nda1.font.color.rgb = MINT
-    p_nda2 = tf_nda.add_paragraph()
-    p_nda2.text = (
-        "In accordance with Non-Disclosure Agreement (NDA) requirements, proprietary client condominium data "
-        "has been fully abstracted into the Singapore Town Council Municipal Operations Framework. "
-        "All benchmarks, by-laws, and resident workflows evaluate real-world municipal operational readiness."
+    tb_cap = s1.shapes.add_textbox(Inches(1.0), Inches(5.4), Inches(6.4), Inches(1.2))
+    tf_cap = tb_cap.text_frame
+    tf_cap.word_wrap = True
+    p_cap1 = tf_cap.paragraphs[0]
+    p_cap1.text = "🏛️ Core Platform Capabilities:"
+    p_cap1.font.bold = True
+    p_cap1.font.size = Pt(13)
+    p_cap1.font.color.rgb = MINT
+    p_cap2 = tf_cap.add_paragraph()
+    p_cap2.text = (
+        "• 24/7 Multimodal Resident Intake (Telegram, Audio Voice Memos, Damage Photos)\n"
+        "• Deterministic Emergency Triage (Zero-Latency Safety Bypass for Gas, Fire, Lift Hazards)\n"
+        "• Grounded Semantic RAG for Town Council By-Laws & Contractor Auto-Dispatch"
     )
-    p_nda2.font.size = Pt(11)
-    p_nda2.font.color.rgb = MUTED
+    p_cap2.font.size = Pt(11)
+    p_cap2.font.color.rgb = WHITE
 
     # Right Side: Interactive Bot Conversation Simulation Card
     add_card(s1, Inches(8.0), Inches(1.1), Inches(4.5), Inches(5.6), CARD_BG, None)
@@ -228,9 +228,8 @@ def build_deck() -> Path:
     add_speaker_notes(
         s1,
         "Good morning lecturer and members of the evaluation panel. Today, we present our Town Council AI Agent "
-        "and Resident Services Chatbot. In compliance with Non-Disclosure Agreements, private condominium trial data "
-        "has been structured into the Singapore Town Council Municipal Operations standard. "
-        "This project tackles the enormous operational burden faced by municipal estate offices—combining real-time "
+        "and Resident Services Chatbot. "
+        "This project tackles the operational burden faced by municipal estate offices—combining real-time "
         "multimodal Telegram reporting, deterministic safety emergency bypass, living by-law compliance via Semantic RAG, "
         "and automated contractor dispatch."
     )
@@ -333,10 +332,10 @@ def build_deck() -> Path:
             ("Intent Routing", "Routes to Fault Report vs By-Law RAG vs Staff."),
         ]),
         ("3. MUNICIPAL RAG", AMBER, [
+            ("PDF-to-Markdown", "Auto-converts PDFs to clean .md to save tokens."),
             ("Sentence-Healed RAG", "Page-break healed chunks across municipal acts."),
             ("Atomic Tables", "Preserves fee tables & booking tariffs 100% intact."),
             ("Hybrid Search", "Dense vector embeddings + BM25 keyword boost."),
-            ("Living Copilot", "HITL Policy Editor for officer rule amendments."),
         ]),
         ("4. ACTION & DISPATCH", MINT, [
             ("Contractor Engine", "Matches fault to 10 term-contractor categories."),
@@ -573,21 +572,21 @@ def build_deck() -> Path:
     tf_r1 = tb_r1.text_frame
     tf_r1.word_wrap = True
     rag_points = [
-        ("🔗 Sentence-Boundary Auto-Healing: ", "Municipal PDF handbooks frequently sever sentences across page breaks (e.g. 'handed over in a clean and / satisfactory condition'). Our pipeline heals broken splits automatically on ingestion."),
-        ("📊 100% Atomic Table Preservation: ", "Naïve chunking splits tables down the middle, severing tariffs and schedules. Our chunker guarantees 100% table atomicity across all fee and schedule tables."),
-        ("🧭 Hierarchical Breadcrumb Enrichment: ", "Every chunk is contextualized with explicit municipal taxonomy (`[TOWN COUNCIL > BY-LAWS > COMMON PROPERTY]`) to eliminate ambiguous retrieval."),
-        ("⚡ Hybrid Vector + Lexical Search: ", "Combines Gemini dense semantic embeddings with BM25 keyword boosting for exact clause and section lookups."),
+        ("📄 Automated PDF-to-Markdown Ingestion: ", "Every time a user ingests a PDF handbook, it is automatically converted into clean Markdown (.md) to strip PDF layout bloat, drastically saving LLM input tokens and API costs."),
+        ("🔗 Sentence-Boundary Auto-Healing: ", "Municipal PDF handbooks frequently sever sentences across page breaks. Our pipeline heals severed splits automatically during markdown conversion before chunking."),
+        ("📊 100% Atomic Table Preservation: ", "Naïve chunking splits tables down the middle, severing tariffs. Our pipeline preserves markdown tables as 100% indivisible units."),
+        ("🧭 Hierarchical Breadcrumbs & Hybrid Search: ", "Enriches chunks with municipal breadcrumbs (`[TOWN COUNCIL > BY-LAWS]`) and fuses Gemini vector embeddings with BM25 keyword boosting."),
     ]
     for i, (b_title, b_text) in enumerate(rag_points):
         p = tf_r1.paragraphs[0] if i == 0 else tf_r1.add_paragraph()
         run1 = p.add_run()
         run1.text = b_title
         run1.font.bold = True
-        run1.font.size = Pt(12)
+        run1.font.size = Pt(11)
         run1.font.color.rgb = WHITE
         run2 = p.add_run()
         run2.text = b_text
-        run2.font.size = Pt(12)
+        run2.font.size = Pt(11)
         run2.font.color.rgb = MUTED
 
     # Right: Benchmark Metrics Grid
@@ -637,11 +636,13 @@ def build_deck() -> Path:
 
     add_speaker_notes(
         s6,
-        "Slide 6 presents our Semantic RAG breakthroughs. In naive RAG, tables get broken across chunks, "
-        "and sentences split across PDF page breaks lose context. "
-        "We engineered sentence-boundary auto-healing and 100% atomic table preservation. "
-        "Our empirical benchmark on 145 municipal chunks shows a 100% Hit Rate @ 3 and an MRR of 0.9222. "
-        "When a resident asks about rules, the answer is grounded in authentic statutory by-laws with zero hallucinations."
+        "Slide 6 presents our Semantic RAG & Ingestion breakthroughs. "
+        "A critical engineering feature: every time a user ingests a PDF handbook or municipal document, "
+        "our pipeline automatically converts it into a clean Markdown file. "
+        "This strips away heavy PDF formatting and visual artifacts, saving significant input tokens and API costs. "
+        "Furthermore, our sentence-boundary healing re-links sentences split across page breaks, and our chunker "
+        "guarantees 100% table atomicity. "
+        "Our benchmark across 145 municipal chunks achieves a 100% Hit Rate @ 3 and an MRR of 0.9222 with zero hallucinations."
     )
 
     # =========================================================================

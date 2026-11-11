@@ -7,8 +7,8 @@
 [![Codebase Knowledge Graph](https://img.shields.io/badge/Knowledge%20Graph-1%2C645%20notes-purple.svg)](graphify-out/obsidian/)
 
 > [!NOTE]
-> **Academic Presentation & NDA Compliance Notice**:
-> In strict compliance with Non-Disclosure Agreement (NDA) requirements, proprietary client condominium data has been fully abstracted and generalized into the **Singapore Town Council & Municipal Estate Operations Framework**. All resident scenarios, by-law evaluations, and term-contractor dispatch workflows evaluate real-world municipal operational readiness while strictly preserving confidentiality.
+> **Autonomous Municipal Operations Platform**:
+> Formulated for Singapore Town Councils, this platform unifies 24/7 multimodal resident reporting, deterministic safety emergency triage, living by-law compliance via Semantic RAG, and automated term-contractor dispatch.
 
 A production-grade, multi-agent AI operations platform for Town Council resident services, municipal emergency triage, by-law compliance, and contractor auto-dispatch. Powered by **Multi-Stage Semantic RAG (Gemini Embeddings + Dense/Sparse Hybrid Retrieval)**, **Document AI Human-in-the-Loop (HITL) By-Law Policy Management**, and real-time **Multimodal Telegram Bot Coordination** (Voice Memos, Vision Damage Diagnosis, and Colloquial Singlish Normalization).
 
@@ -59,8 +59,10 @@ Grounded and rigorously benchmarked against authentic municipal estate managemen
 ## Key Pillars & Technical Capabilities
 
 ### 1. Multi-Stage Semantic RAG & Estate Legal Brain
-Traditional RAG breaks on condominium handbooks because tables get severed and clauses lose hierarchical context. Our custom Semantic RAG engine (`condo_classifier/semantic_rag.py`) introduces:
+Traditional RAG breaks on municipal handbooks because tables get severed and clauses lose hierarchical context. Our custom Semantic RAG engine (`condo_classifier/semantic_rag.py`) introduces:
+* **Automated PDF-to-Markdown Ingestion (Token Optimization)**: Every time a user ingests a PDF handbook, the pipeline automatically converts it into clean Markdown (`.md`). This eliminates raw PDF visual/font metadata, dramatically saving LLM input tokens and API costs while maintaining crisp semantic formatting.
 * **Two-Stage Chunking**: Structure-aware Markdown AST header splitting combined with sentence-level semantic breakpoint distance clustering (90th-percentile cosine distance).
+* **Automated Sentence-Boundary Healing**: Re-links severed sentences split across PDF page breaks, eliminating context fractures.
 * **100% Table Atomicity**: GFM tables (contractor directories, parking clearance tables, fee schedules) are detected and preserved as indivisible semantic units.
 * **Contextual Breadcrumb Injection**: Prepends `[Document: Tribeca | Section: General > Facilities]` into dense embeddings, ensuring chunks retain full structural awareness.
 * **Hybrid Retrieval**: Fuses dense semantic vector search (`gemini-embedding-001`) with sparse token and domain regex boosting (`$150`, `22:00`, `BMSMA`, `deposit`).
