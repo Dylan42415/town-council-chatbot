@@ -210,3 +210,55 @@ Recreational drone flight is permitted in the open field from 04:00 to 05:30 AM 
     # Verify that the arbitrary S$450 was dynamically extracted from the table
     assert "450" in res_fee.answer or "Drone Arena Flight" in res_fee.answer
 
+
+def test_semantic_rag_dynamic_contact_revamp(tmp_path: Path):
+    """
+    Verifies that when an estate handbook is revamped with new contact numbers,
+    even unrelated queries (like swimming pool rules) dynamically output the
+    updated primary office and guardhouse contacts in their escalation footer.
+    """
+    kb_file = tmp_path / "jurong_palms.md"
+    initial_content = """# Jurong Palms Resident Handbook
+
+## Useful Contact Numbers
+| Management Office | Jurong Palms Office | Tel: | 6111 2233 |
+| Security Guardhouse | Main Gate | Tel: | 6111 4455 |
+
+## 1. Swimming Pool
+The swimming pool is open 07:00 to 22:00 daily. Proper swimwear is strictly required.
+"""
+    kb_file.write_text(initial_content, encoding="utf-8")
+
+    engine = SemanticRAGEngine(kb_path=kb_file)
+    engine.initialize()
+
+    assert "Jurong Palms" in engine.estate_name
+    assert "6111 2233" in engine.primary_estate_contact
+    assert "6111 4455" in engine.primary_estate_contact
+
+    # Unrelated query before revamp
+    res1 = engine.query("Can I swim in street clothes?")
+    assert "6111 2233" in res1.answer
+
+    # Revamp all contacts in the handbook
+    revamped_content = """# Jurong Palms Resident Handbook
+
+## Useful Contact Numbers
+| Management Office | Jurong Palms Office | Tel: | 6888 9900 |
+| Security Guardhouse | Main Gate | Tel: | 6888 7766 |
+
+## 1. Swimming Pool
+The swimming pool is open 07:00 to 22:00 daily. Proper swimwear is strictly required.
+"""
+    kb_file.write_text(revamped_content, encoding="utf-8")
+    engine.reindex()
+
+    assert "6888 9900" in engine.primary_estate_contact
+    assert "6888 7766" in engine.primary_estate_contact
+
+    # Unrelated query after revamp: must reflect updated contacts without hardcoding
+    res2 = engine.query("Can I swim in street clothes?")
+    assert "6888 9900" in res2.answer
+    assert "6111 2233" not in res2.answer
+
+

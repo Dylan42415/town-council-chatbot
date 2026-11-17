@@ -474,7 +474,72 @@ class SemanticRAGEngine:
         self.embedding_provider = embedding_provider or EmbeddingProvider()
         self.chunker = SemanticChunker(embedding_provider=self.embedding_provider)
         self.index = HybridSemanticIndex(embedding_provider=self.embedding_provider)
+        self.estate_name: str = "Estate Management"
+        self.primary_estate_contact: str = "Contact the Management Office or Guardhouse directly."
         self._initialized = False
+
+    def _refresh_estate_metadata(self) -> None:
+        """
+        Dynamically extracts the estate name, primary management office, and guardhouse
+        contacts from indexed handbook chunks. Ensures that when an officer amends contact
+        numbers in the handbook, all response escalation footers adapt immediately without hardcoding.
+        """
+        full_text = ""
+        if self.kb_path.exists() and self.kb_path.is_file():
+            try:
+                full_text = self.kb_path.read_text(encoding="utf-8")
+            except Exception as e:
+                logger.debug(f"Could not read raw kb_path for metadata extraction: {e}")
+
+        if not full_text:
+            full_text = "\n\n".join(c.content for c in self.index.chunks)
+
+        if not full_text.strip():
+            return
+
+        # 1. Dynamically extract estate name
+        name_match = re.search(
+            r"#+\s*(?:Welcome\s+to\s+)?([A-Za-z0-9\s]+?)(?:Resident[\'’]?s\s+Handbook|Handbook|Condominium)",
+            full_text,
+            re.IGNORECASE,
+        )
+        if name_match:
+            self.estate_name = name_match.group(1).strip()
+        elif "tribeca" in full_text[:1500].lower():
+            self.estate_name = "Tribeca Condominium"
+
+        # 2. Dynamically extract management office and guardhouse contacts
+        office_nums: list[str] = []
+        guard_nums: list[str] = []
+
+        for line in full_text.splitlines():
+            lower = line.lower()
+            if "management office" in lower and (
+                "tel" in lower or "|" in line or "at" in lower or "call" in lower
+            ):
+                nums = re.findall(r"\b\d{4}\s*\d{4}\b|\b\d{8}\b", line)
+                for n in nums:
+                    clean = re.sub(r"^(\d{4})(\d{4})$", r"\1 \2", n.strip())
+                    if clean not in office_nums and not clean.startswith("6509 6324"):
+                        office_nums.append(clean)
+            if "guardhouse" in lower or "security post" in lower:
+                nums = re.findall(r"\b\d{4}\s*\d{4}\b|\b\d{8}\b", line)
+                for n in nums:
+                    clean = re.sub(r"^(\d{4})(\d{4})$", r"\1 \2", n.strip())
+                    if clean not in guard_nums:
+                        guard_nums.append(clean)
+
+        parts: list[str] = []
+        if office_nums:
+            mo_str = " / ".join(office_nums[:2])
+            parts.append(f"the {self.estate_name} Management Office at {mo_str}")
+        else:
+            parts.append(f"the {self.estate_name} Management Office")
+
+        if guard_nums:
+            parts.append(f"Guardhouse at {guard_nums[0]}")
+
+        self.primary_estate_contact = "Contact " + " or ".join(parts) + "."
 
     def initialize(self, force: bool = False) -> None:
         """Loads and indexes the knowledge base."""
@@ -488,12 +553,14 @@ class SemanticRAGEngine:
                 for md in DEFAULT_VAULT_DIR.glob("*.md"):
                     all_chunks.extend(self.chunker.chunk_markdown_file(md))
                 self.index.index_chunks(all_chunks)
+                self._refresh_estate_metadata()
                 self._initialized = True
                 return
             raise FileNotFoundError(f"Knowledge Base path does not exist: {self.kb_path}")
 
         chunks = self.chunker.chunk_markdown_file(self.kb_path)
         self.index.index_chunks(chunks)
+        self._refresh_estate_metadata()
         self._initialized = True
         logger.info(f"Initialized Semantic RAG with {len(chunks)} chunks from {self.kb_path.name}")
 
@@ -624,7 +691,7 @@ class SemanticRAGEngine:
                 client = genai.Client(api_key=api_key)
 
                 system_prompt = (
-                    "You are the official Condominium Management AI Assistant for Tribeca Condominium. Answer resident questions strictly "
+                    f"You are the official Condominium Management AI Assistant for {self.estate_name}. Answer resident questions strictly "
                     "using the provided estate handbook context.\n\n"
                     "FORMAT YOUR RESPONSE WITH THIS CLEAR DECISION-FIRST STRUCTURE:\n"
                     "1. **RULING**: Start with a direct verdict: **PERMITTED**, **PROHIBITED**, **ACTION REQUIRED**, or **NOT APPLICABLE** (for external/non-estate questions).\n"
@@ -634,7 +701,7 @@ class SemanticRAGEngine:
                     "CRITICAL GROUNDING MANDATE:\n"
                     "- Ground your answer strictly and exclusively on the provided context without speculating.\n"
                     "- Never invent, assume, or cite external phone numbers, mock vendors, or contact details not explicitly present in the provided context.\n"
-                    "- If a specific phone number or procedure is not in the context, state that clearly and advise contacting the Tribeca Management Office at 6509 4278 / 6509 9748 or Guardhouse at 6509 6946."
+                    f"- If a specific phone number or procedure is not in the context, state that clearly and advise: {self.primary_estate_contact}"
                 )
 
                 prompt = (
@@ -731,18 +798,15 @@ class SemanticRAGEngine:
 
         constraints_str = "\n".join(constraint_bullets[:4])
 
-        # Actionable steps: prioritize authentic Tribeca estate contacts if present
-        if any(term in context for term in ["65094278", "6509 4278", "65099748", "6509 9748", "65096946", "6509 6946", "Tribeca Management Office"]):
-            contact_items = [
-                "Contact the Tribeca Management Office at 6509 4278 / 6509 9748 or Guardhouse at 6509 6946."
-            ]
-        else:
-            contact_matches = re.findall(r"(?:Tel\s*:?|Phone\s*:?|Office\s*:?)\s*([0-9\s\-+]{7,15})", context, re.IGNORECASE)
-            contact_items = []
-            if contact_matches:
-                contact_items.append(f"Contact the relevant service department at {contact_matches[0].strip()}.")
-            else:
-                contact_items.append("Contact the Tribeca Management Office at 6509 4278 / 6509 9748 or Guardhouse at 6509 6946.")
+        # Actionable steps: dynamically extract contacts from context, or fall back to the handbook's primary estate contact
+        contact_matches = re.findall(r"(?:Tel\s*:?|Phone\s*:?|Office\s*:?)\s*([0-9\s\-+]{7,15})", context, re.IGNORECASE)
+        contact_items = []
+        if contact_matches:
+            clean_match = contact_matches[0].strip()
+            if len(clean_match) >= 7:
+                contact_items.append(f"Contact the relevant service department at {clean_match}.")
+        if not contact_items:
+            contact_items.append(self.primary_estate_contact)
 
         action_str = "\n".join(dict.fromkeys(contact_items[:2]))
 
