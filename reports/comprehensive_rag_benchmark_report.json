@@ -1,0 +1,919 @@
+{
+  "timestamp": "2026-11-18 01:30:20",
+  "handbook_evaluated": "sample_condo_handbook.md",
+  "estate_name_detected": "Marina Heights",
+  "table_integrity": {
+    "total_tables": 7,
+    "intact_tables": 7,
+    "table_integrity_score": 100.0,
+    "details": [
+      {
+        "table_id": 1,
+        "header": "| Service / Department | Location / Contact | Operational Ho",
+        "chunk_id": "chunk_0003",
+        "intact": true,
+        "status": "INTACT",
+        "rows": 7
+      },
+      {
+        "table_id": 2,
+        "header": "| Requirement | Specification / Policy |",
+        "chunk_id": "chunk_0004",
+        "intact": true,
+        "status": "INTACT",
+        "rows": 8
+      },
+      {
+        "table_id": 3,
+        "header": "| Work Classification | Permitted Schedule | Strict Prohibit",
+        "chunk_id": "chunk_0005",
+        "intact": true,
+        "status": "INTACT",
+        "rows": 6
+      },
+      {
+        "table_id": 4,
+        "header": "| Facility | Operating Hours | Booking Fee | Security Deposi",
+        "chunk_id": "chunk_0007",
+        "intact": true,
+        "status": "INTACT",
+        "rows": 7
+      },
+      {
+        "table_id": 5,
+        "header": "| Vehicle Category | Allocation & Charges | Requirements |",
+        "chunk_id": "chunk_0009",
+        "intact": true,
+        "status": "INTACT",
+        "rows": 6
+      },
+      {
+        "table_id": 6,
+        "header": "| Stage | Responsible Party | Timeframe / SLA | Action Requi",
+        "chunk_id": "chunk_0012",
+        "intact": true,
+        "status": "INTACT",
+        "rows": 7
+      },
+      {
+        "table_id": 7,
+        "header": "| Regulation Parameter | Permitted Policy | Prohibitions & P",
+        "chunk_id": "chunk_0013",
+        "intact": true,
+        "status": "INTACT",
+        "rows": 7
+      }
+    ]
+  },
+  "breadcrumb_injection": {
+    "total_chunks": 15,
+    "titled_chunks": 14,
+    "correctly_injected": 14,
+    "coverage_percent": 100.0
+  },
+  "retrieval_benchmark": {
+    "total": 18,
+    "hit_count_at_1": 17,
+    "hit_rate_at_1": 94.44,
+    "hit_count_at_3": 18,
+    "hit_rate_at_3": 100.0,
+    "mrr": 0.9722,
+    "grounding_score": 100.0,
+    "results": [
+      {
+        "id": "Q01",
+        "category": "Renovation Noise",
+        "query": "Can my contractor do heavy drilling or hacking on Saturday morning?",
+        "target_chunk_id": "chunk_0005",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.951,
+        "grounded": true,
+        "by_laws_cited": [
+          "By-law §4 strictly governs unit renovations to balance home improvement rights against residents' peaceful living rights"
+        ],
+        "answer_preview": "1. **RULING**: **PROHIBITED**  2. **BY-LAW & STATUTORY AUTHORITY**:  Per Marina Heights Condominium (MCST 4291) Resident Handbook & By-laws, Section 3.1 (Renovation Working Hours & Permissible Acousti",
+        "retrieved_ids": [
+          "chunk_0005",
+          "chunk_0003",
+          "chunk_0006"
+        ]
+      },
+      {
+        "id": "Q02",
+        "category": "Renovation Hours",
+        "query": "What are the allowed hours for general renovation like painting and carpentry?",
+        "target_chunk_id": "chunk_0005",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 3.284,
+        "grounded": true,
+        "by_laws_cited": [
+          "By-law §4",
+          "By-law §4 strictly governs unit renovations to balance home improvement rights against residents' peaceful living rights"
+        ],
+        "answer_preview": "1. **RULING**: **PERMITTED**  2. **BY-LAW & STATUTORY AUTHORITY**:  Per Marina Heights Condominium (MCST 4291) Resident Handbook, Section 3.1 (Renovation Working Hours & Permissible Acoustic Threshold",
+        "retrieved_ids": [
+          "chunk_0005",
+          "chunk_0006",
+          "chunk_0003"
+        ]
+      },
+      {
+        "id": "Q03",
+        "category": "Weekend Drilling Penalty",
+        "query": "What happens if a contractor does unapproved drilling on Sunday or a public holiday?",
+        "target_chunk_id": "chunk_0006",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.608,
+        "grounded": true,
+        "by_laws_cited": [
+          "By-law §4 strictly governs unit renovations to balance home improvement rights against residents' peaceful living rights"
+        ],
+        "answer_preview": "1. **RULING**: **PROHIBITED**  2. **BY-LAW & STATUTORY AUTHORITY**:  Per Marina Heights Condominium (MCST 4291) Resident Handbook & By-laws, Section 3.1 (Renovation Working Hours & Permissible Acousti",
+        "retrieved_ids": [
+          "chunk_0006",
+          "chunk_0005",
+          "chunk_0003"
+        ]
+      },
+      {
+        "id": "Q04",
+        "category": "Noise Infraction Fine",
+        "query": "What is the penalty fine for a second renovation noise complaint?",
+        "target_chunk_id": "chunk_0006",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.179,
+        "grounded": true,
+        "by_laws_cited": [
+          "By-law §10 balances the privilege of pet ownership with hygiene"
+        ],
+        "answer_preview": "1. **RULING**: **ACTION REQUIRED**  2. **BY-LAW & STATUTORY AUTHORITY**: Marina Heights Condominium (MCST 4291) - Resident Handbook & By-laws, Section 3.2 (Noise Infractions & Financial Penalties).  3",
+        "retrieved_ids": [
+          "chunk_0006",
+          "chunk_0011",
+          "chunk_0013"
+        ]
+      },
+      {
+        "id": "Q05",
+        "category": "BBQ Booking Tariff",
+        "query": "How much does it cost to book the BBQ pit and is there a deposit?",
+        "target_chunk_id": "chunk_0007",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.669,
+        "grounded": true,
+        "by_laws_cited": [],
+        "answer_preview": "1. **RULING**: **ACTION REQUIRED**  2. **BY-LAW & STATUTORY AUTHORITY**: Marina Heights Condominium (MCST 4291) - Resident Handbook & By-laws, Section 4.1 Facilities Tariff & Operating Hours.  3. **EX",
+        "retrieved_ids": [
+          "chunk_0007",
+          "chunk_0008",
+          "chunk_0004"
+        ]
+      },
+      {
+        "id": "Q06",
+        "category": "BBQ Operating Hours & Capacity",
+        "query": "What are the operational hours and capacity limit for booking the BBQ pavilion pit?",
+        "target_chunk_id": "chunk_0007",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.474,
+        "grounded": true,
+        "by_laws_cited": [],
+        "answer_preview": "1. **RULING**: **PERMITTED** (Subject to booking and capacity constraints).  2. **BY-LAW & STATUTORY AUTHORITY**: Marina Heights Condominium (MCST 4291) Resident Handbook & By-laws, Section 4.1: Facil",
+        "retrieved_ids": [
+          "chunk_0007",
+          "chunk_0008",
+          "chunk_0003"
+        ]
+      },
+      {
+        "id": "Q07",
+        "category": "BBQ Cleaning Fee",
+        "query": "Is there a cleaning fee if the BBQ pit is left dirty with food and ash?",
+        "target_chunk_id": "chunk_0008",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.481,
+        "grounded": true,
+        "by_laws_cited": [
+          "By-law §10 balances the privilege of pet ownership with hygiene"
+        ],
+        "answer_preview": "1. **RULING**: **ACTION REQUIRED** (to avoid penalty).  2. **BY-LAW & STATUTORY AUTHORITY**: Marina Heights Condominium (MCST 4291) - Resident Handbook & By-laws, Section 4.2 (BBQ Pit and Poolside Eti",
+        "retrieved_ids": [
+          "chunk_0008",
+          "chunk_0013",
+          "chunk_0006"
+        ]
+      },
+      {
+        "id": "Q08",
+        "category": "Pool Hours & Attire",
+        "query": "What are the opening hours and attire rules for the swimming pool?",
+        "target_chunk_id": "chunk_0007",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.478,
+        "grounded": true,
+        "by_laws_cited": [],
+        "answer_preview": "1. **RULING**: **PERMITTED** (Subject to compliance with operating hours and attire regulations).  2. **BY-LAW & STATUTORY AUTHORITY**:  - Source 1: Marina Heights Condominium (MCST 4291) - Resident H",
+        "retrieved_ids": [
+          "chunk_0007",
+          "chunk_0008",
+          "chunk_0003"
+        ]
+      },
+      {
+        "id": "Q09",
+        "category": "Poolside Noise / Quiet Hours",
+        "query": "Can we play amplified music or host a karaoke session at the poolside BBQ after 10pm?",
+        "target_chunk_id": "chunk_0008",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.452,
+        "grounded": true,
+        "by_laws_cited": [
+          "By-law §4 strictly governs unit renovations to balance home improvement rights against residents' peaceful living rights"
+        ],
+        "answer_preview": "1. **RULING**: **PROHIBITED**  2. **BY-LAW & STATUTORY AUTHORITY**:  - Marina Heights Condominium (MCST 4291) Resident Handbook & By-laws, Section 4.2 (BBQ Pit and Poolside Etiquette).  3. **EXACT CON",
+        "retrieved_ids": [
+          "chunk_0008",
+          "chunk_0007",
+          "chunk_0005"
+        ]
+      },
+      {
+        "id": "Q10",
+        "category": "Water Leak Statutory Presumption",
+        "query": "Water is leaking from my bathroom ceiling from the unit above. Who is legally responsible under BMSMA Section 101?",
+        "target_chunk_id": "chunk_0011",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.977,
+        "grounded": true,
+        "by_laws_cited": [],
+        "answer_preview": "1. **RULING**: **ACTION REQUIRED** (The upper unit owner is legally responsible).  2. **BY-LAW & STATUTORY AUTHORITY**: Under Section 101 of the Building Maintenance and Strata Management Act (BMSMA),",
+        "retrieved_ids": [
+          "chunk_0011",
+          "chunk_0012",
+          "chunk_0002"
+        ]
+      },
+      {
+        "id": "Q11",
+        "category": "Water Leak Inspection SLA",
+        "query": "What is the management response time and inspection timeline for inter-floor water leaks?",
+        "target_chunk_id": "chunk_0012",
+        "rank": 2,
+        "hit_at_1": false,
+        "hit_at_3": true,
+        "rr": 0.5,
+        "latency_s": 3.581,
+        "grounded": true,
+        "by_laws_cited": [],
+        "answer_preview": "1. **RULING**: **ACTION REQUIRED**  2. **BY-LAW & STATUTORY AUTHORITY**:  Per Marina Heights Condominium (MCST 4291) Resident Handbook & By-laws, Section 6.2 (Inspection SLA & Resolution Escalation), ",
+        "retrieved_ids": [
+          "chunk_0011",
+          "chunk_0012",
+          "chunk_0002"
+        ]
+      },
+      {
+        "id": "Q12",
+        "category": "Parking Wheel Clamping",
+        "query": "My car was wheel-clamped in the visitor lot. What is the unclamping fee and where do I pay?",
+        "target_chunk_id": "chunk_0010",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.244,
+        "grounded": true,
+        "by_laws_cited": [],
+        "answer_preview": "1. **RULING**: **ACTION REQUIRED**  2. **BY-LAW & STATUTORY AUTHORITY**:  Per Marina Heights Condominium (MCST 4291) Resident Handbook & By-laws, Section 5.2 (Visitor Parking & Wheel-Clamping Enforcem",
+        "retrieved_ids": [
+          "chunk_0010",
+          "chunk_0006",
+          "chunk_0003"
+        ]
+      },
+      {
+        "id": "Q13",
+        "category": "Season Parking Allocation",
+        "query": "What is the monthly parking charge for a resident's second vehicle?",
+        "target_chunk_id": "chunk_0009",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.553,
+        "grounded": true,
+        "by_laws_cited": [],
+        "answer_preview": "1. **RULING**: **ACTION REQUIRED**  2. **BY-LAW & STATUTORY AUTHORITY**: Marina Heights Condominium (MCST 4291) - Resident Handbook & By-laws, Section 5.1: Resident Vehicle Season Decals & Allocation.",
+        "retrieved_ids": [
+          "chunk_0009",
+          "chunk_0010",
+          "chunk_0007"
+        ]
+      },
+      {
+        "id": "Q14",
+        "category": "Emergency Lift Hotline",
+        "query": "The elevator is broken down and someone is trapped inside. What is the 24/7 lift hotline and who should I contact?",
+        "target_chunk_id": "chunk_0003",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.823,
+        "grounded": true,
+        "by_laws_cited": [],
+        "answer_preview": "1. **RULING**: **ACTION REQUIRED**  2. **BY-LAW & STATUTORY AUTHORITY**:  Per the *Marina Heights Condominium (MCST 4291) Resident Handbook & By-laws, Section 1.1 Management Office & Security Director",
+        "retrieved_ids": [
+          "chunk_0003",
+          "chunk_0012",
+          "chunk_0001"
+        ]
+      },
+      {
+        "id": "Q15",
+        "category": "Pet Swimming Pool Ban & Leash Fine",
+        "query": "Are pets allowed in the swimming pool area, and what is the fine for an unleashed dog?",
+        "target_chunk_id": "chunk_0013",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.733,
+        "grounded": true,
+        "by_laws_cited": [
+          "By-law §10 balances the privilege of pet ownership with hygiene"
+        ],
+        "answer_preview": "1. **RULING**: **PROHIBITED** (Pets in swimming pool area) and **ACTION REQUIRED** (Leash rule compliance).  2. **BY-LAW & STATUTORY AUTHORITY**:  - **Pets in Pool Area**: Per *Section 7.1 Domestic Pe",
+        "retrieved_ids": [
+          "chunk_0013",
+          "chunk_0006",
+          "chunk_0008"
+        ]
+      },
+      {
+        "id": "Q16",
+        "category": "Pet Limit Per Unit",
+        "query": "What is the pet limit per unit? Can I keep two dogs in my condo?",
+        "target_chunk_id": "chunk_0013",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.413,
+        "grounded": true,
+        "by_laws_cited": [
+          "By-law §10 balances the privilege of pet ownership with hygiene"
+        ],
+        "answer_preview": "1. **RULING**: **PROHIBITED**  2. **BY-LAW & STATUTORY AUTHORITY**:  Per Marina Heights Condominium (MCST 4291) Resident Handbook & By-laws, Section 7.1 (Domestic Pet Limits & Regulations), the estate",
+        "retrieved_ids": [
+          "chunk_0013",
+          "chunk_0011",
+          "chunk_0002"
+        ]
+      },
+      {
+        "id": "Q17",
+        "category": "Moving Guidelines Deposit",
+        "query": "What is the security deposit and advance notice required for moving in or moving out?",
+        "target_chunk_id": "chunk_0004",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.557,
+        "grounded": true,
+        "by_laws_cited": [
+          "By-law §4 strictly governs unit renovations to balance home improvement rights against residents' peaceful living rights"
+        ],
+        "answer_preview": "1. **RULING**: **ACTION REQUIRED**  2. **BY-LAW & STATUTORY AUTHORITY**: Marina Heights Condominium (MCST 4291) Resident Handbook & By-laws, Section 2.1: Moving Guidelines & Security Deposit.  3. **EX",
+        "retrieved_ids": [
+          "chunk_0004",
+          "chunk_0005",
+          "chunk_0006"
+        ]
+      },
+      {
+        "id": "Q18",
+        "category": "Corridor Clutter & Fire Safety",
+        "query": "Can residents place shoe racks or bicycles along the common corridor outside their unit under SCDF rules?",
+        "target_chunk_id": "chunk_0015",
+        "rank": 1,
+        "hit_at_1": true,
+        "hit_at_3": true,
+        "rr": 1.0,
+        "latency_s": 2.526,
+        "grounded": true,
+        "by_laws_cited": [
+          "By-law §10 balances the privilege of pet ownership with hygiene"
+        ],
+        "answer_preview": "1. **RULING**: **PROHIBITED**  2. **BY-LAW & STATUTORY AUTHORITY**:  In accordance with Marina Heights Condominium (MCST 4291) Resident Handbook & By-laws, Section 8.2 (Fire Escape Corridors - SCDF Co",
+        "retrieved_ids": [
+          "chunk_0015",
+          "chunk_0014",
+          "chunk_0013"
+        ]
+      }
+    ]
+  },
+  "contact_non_pollution": {
+    "queries_tested": 17,
+    "clean_queries": 17,
+    "clean_relevance_score": 100.0,
+    "pollution_detected": false,
+    "checks": [
+      {
+        "id": "Q01",
+        "category": "Renovation Noise",
+        "query": "Can my contractor do heavy drilling or hacking on Saturday morning?",
+        "target": "chunk_0005",
+        "target_rank": 1,
+        "top1_id": "chunk_0005",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q02",
+        "category": "Renovation Hours",
+        "query": "What are the allowed hours for general renovation like painting and carpentry?",
+        "target": "chunk_0005",
+        "target_rank": 1,
+        "top1_id": "chunk_0005",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q03",
+        "category": "Weekend Drilling Penalty",
+        "query": "What happens if a contractor does unapproved drilling on Sunday or a public holiday?",
+        "target": "chunk_0006",
+        "target_rank": 1,
+        "top1_id": "chunk_0006",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q04",
+        "category": "Noise Infraction Fine",
+        "query": "What is the penalty fine for a second renovation noise complaint?",
+        "target": "chunk_0006",
+        "target_rank": 1,
+        "top1_id": "chunk_0006",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q05",
+        "category": "BBQ Booking Tariff",
+        "query": "How much does it cost to book the BBQ pit and is there a deposit?",
+        "target": "chunk_0007",
+        "target_rank": 1,
+        "top1_id": "chunk_0007",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q06",
+        "category": "BBQ Operating Hours & Capacity",
+        "query": "What are the operational hours and capacity limit for booking the BBQ pavilion pit?",
+        "target": "chunk_0007",
+        "target_rank": 1,
+        "top1_id": "chunk_0007",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q07",
+        "category": "BBQ Cleaning Fee",
+        "query": "Is there a cleaning fee if the BBQ pit is left dirty with food and ash?",
+        "target": "chunk_0008",
+        "target_rank": 1,
+        "top1_id": "chunk_0008",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q08",
+        "category": "Pool Hours & Attire",
+        "query": "What are the opening hours and attire rules for the swimming pool?",
+        "target": "chunk_0007",
+        "target_rank": 1,
+        "top1_id": "chunk_0007",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q09",
+        "category": "Poolside Noise / Quiet Hours",
+        "query": "Can we play amplified music or host a karaoke session at the poolside BBQ after 10pm?",
+        "target": "chunk_0008",
+        "target_rank": 1,
+        "top1_id": "chunk_0008",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q10",
+        "category": "Water Leak Statutory Presumption",
+        "query": "Water is leaking from my bathroom ceiling from the unit above. Who is legally responsible under BMSMA Section 101?",
+        "target": "chunk_0011",
+        "target_rank": 1,
+        "top1_id": "chunk_0011",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q11",
+        "category": "Water Leak Inspection SLA",
+        "query": "What is the management response time and inspection timeline for inter-floor water leaks?",
+        "target": "chunk_0012",
+        "target_rank": 2,
+        "top1_id": "chunk_0011",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q12",
+        "category": "Parking Wheel Clamping",
+        "query": "My car was wheel-clamped in the visitor lot. What is the unclamping fee and where do I pay?",
+        "target": "chunk_0010",
+        "target_rank": 1,
+        "top1_id": "chunk_0010",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q13",
+        "category": "Season Parking Allocation",
+        "query": "What is the monthly parking charge for a resident's second vehicle?",
+        "target": "chunk_0009",
+        "target_rank": 1,
+        "top1_id": "chunk_0009",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q15",
+        "category": "Pet Swimming Pool Ban & Leash Fine",
+        "query": "Are pets allowed in the swimming pool area, and what is the fine for an unleashed dog?",
+        "target": "chunk_0013",
+        "target_rank": 1,
+        "top1_id": "chunk_0013",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q16",
+        "category": "Pet Limit Per Unit",
+        "query": "What is the pet limit per unit? Can I keep two dogs in my condo?",
+        "target": "chunk_0013",
+        "target_rank": 1,
+        "top1_id": "chunk_0013",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q17",
+        "category": "Moving Guidelines Deposit",
+        "query": "What is the security deposit and advance notice required for moving in or moving out?",
+        "target": "chunk_0004",
+        "target_rank": 1,
+        "top1_id": "chunk_0004",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      },
+      {
+        "id": "Q18",
+        "category": "Corridor Clutter & Fire Safety",
+        "query": "Can residents place shoe racks or bicycles along the common corridor outside their unit under SCDF rules?",
+        "target": "chunk_0015",
+        "target_rank": 1,
+        "top1_id": "chunk_0015",
+        "contact_chunk_usurped_rank1": false,
+        "clean_relevance": true
+      }
+    ]
+  },
+  "dynamic_revamp_test": {
+    "engine_estate_name": "Emerald Crest",
+    "primary_estate_contact": "Contact the Emerald Crest Management Office at 6999 8888 or Guardhouse at 6999 7777.",
+    "zero_stale_numbers": true,
+    "all_new_numbers_present": true,
+    "checks": [
+      {
+        "category": "General Inquiry",
+        "prompt": "Can residents swim in casual T-shirts?",
+        "has_new_contacts": true,
+        "stale_numbers_present": false,
+        "stale_detected": [],
+        "answer_preview": "OFFICIAL MANAGEMENT RESPONSE:  1. **RULING**: **PROHIBITED**  2. **BY-LAW & STATUTORY AUTHORITY**: Emerald Crest Condominium (MCST 5500) - Resident Handbook, Section 2.1 Swimming Pool.  3. **EXACT CON"
+      },
+      {
+        "category": "Contact Inquiry",
+        "prompt": "Who should I call for a trapped passenger in the elevator?",
+        "has_new_contacts": true,
+        "stale_numbers_present": false,
+        "stale_detected": [],
+        "answer_preview": "1. **RULING**: **ACTION REQUIRED**  2. **BY-LAW & STATUTORY AUTHORITY**: Emerald Crest Condominium (MCST 5500) - Resident Handbook, Section 1: Directory & Emergency Contacts.  3. **EXACT CONSTRAINTS &"
+      },
+      {
+        "category": "Office Inquiry",
+        "prompt": "How do I reach the management office for an application?",
+        "has_new_contacts": true,
+        "stale_numbers_present": false,
+        "stale_detected": [],
+        "answer_preview": "1. **RULING**: **ACTION REQUIRED**  2. **BY-LAW & STATUTORY AUTHORITY**: Emerald Crest Condominium (MCST 5500) Resident Handbook, Section 1: Directory & Emergency Contacts.  3. **EXACT CONSTRAINTS & T"
+      }
+    ]
+  },
+  "faithfulness_audit": {
+    "queries_tested": 18,
+    "faithfulness_rate": 100.0,
+    "avg_fact_recall_percent": 78.72,
+    "hallucination_flags_count": 0,
+    "flags": [],
+    "details": [
+      {
+        "id": "Q01",
+        "category": "Renovation Noise",
+        "dollars_cited": [
+          1000.0
+        ],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 0.67,
+        "faithful": true
+      },
+      {
+        "id": "Q02",
+        "category": "Renovation Hours",
+        "dollars_cited": [
+          2000.0
+        ],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [
+          "By-law §4"
+        ],
+        "unverified_bylaws": [],
+        "fact_recall": 1.0,
+        "faithful": true
+      },
+      {
+        "id": "Q03",
+        "category": "Weekend Drilling Penalty",
+        "dollars_cited": [
+          1000.0
+        ],
+        "unverified_dollars": [],
+        "phones_cited": [
+          "+65 6789 0100",
+          "+65 6789 0200"
+        ],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 1.0,
+        "faithful": true
+      },
+      {
+        "id": "Q04",
+        "category": "Noise Infraction Fine",
+        "dollars_cited": [
+          500.0
+        ],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 0.67,
+        "faithful": true
+      },
+      {
+        "id": "Q05",
+        "category": "BBQ Booking Tariff",
+        "dollars_cited": [
+          20.0,
+          50.0,
+          50.0
+        ],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 1.0,
+        "faithful": true
+      },
+      {
+        "id": "Q06",
+        "category": "BBQ Operating Hours & Capacity",
+        "dollars_cited": [
+          20.0,
+          50.0,
+          50.0
+        ],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 0.33,
+        "faithful": true
+      },
+      {
+        "id": "Q07",
+        "category": "BBQ Cleaning Fee",
+        "dollars_cited": [
+          50.0
+        ],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 1.0,
+        "faithful": true
+      },
+      {
+        "id": "Q08",
+        "category": "Pool Hours & Attire",
+        "dollars_cited": [],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 0.33,
+        "faithful": true
+      },
+      {
+        "id": "Q09",
+        "category": "Poolside Noise / Quiet Hours",
+        "dollars_cited": [],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 1.0,
+        "faithful": true
+      },
+      {
+        "id": "Q10",
+        "category": "Water Leak Statutory Presumption",
+        "dollars_cited": [],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 0.67,
+        "faithful": true
+      },
+      {
+        "id": "Q11",
+        "category": "Water Leak Inspection SLA",
+        "dollars_cited": [],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 1.0,
+        "faithful": true
+      },
+      {
+        "id": "Q12",
+        "category": "Parking Wheel Clamping",
+        "dollars_cited": [
+          107.0
+        ],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 1.0,
+        "faithful": true
+      },
+      {
+        "id": "Q13",
+        "category": "Season Parking Allocation",
+        "dollars_cited": [
+          120.0
+        ],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 0.33,
+        "faithful": true
+      },
+      {
+        "id": "Q14",
+        "category": "Emergency Lift Hotline",
+        "dollars_cited": [],
+        "unverified_dollars": [],
+        "phones_cited": [
+          "1800-543-8888",
+          "1800-543-8888"
+        ],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 1.0,
+        "faithful": true
+      },
+      {
+        "id": "Q15",
+        "category": "Pet Swimming Pool Ban & Leash Fine",
+        "dollars_cited": [
+          200.0,
+          100.0
+        ],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 0.5,
+        "faithful": true
+      },
+      {
+        "id": "Q16",
+        "category": "Pet Limit Per Unit",
+        "dollars_cited": [],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 0.67,
+        "faithful": true
+      },
+      {
+        "id": "Q17",
+        "category": "Moving Guidelines Deposit",
+        "dollars_cited": [
+          1000.0,
+          1000.0
+        ],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 1.0,
+        "faithful": true
+      },
+      {
+        "id": "Q18",
+        "category": "Corridor Clutter & Fire Safety",
+        "dollars_cited": [],
+        "unverified_dollars": [],
+        "phones_cited": [],
+        "unverified_phones": [],
+        "bylaws_cited": [],
+        "unverified_bylaws": [],
+        "fact_recall": 1.0,
+        "faithful": true
+      }
+    ]
+  }
+}
