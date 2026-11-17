@@ -262,3 +262,62 @@ The swimming pool is open 07:00 to 22:00 daily. Proper swimwear is strictly requ
     assert "6111 2233" not in res2.answer
 
 
+def test_semantic_rag_missing_contact_directory(tmp_path: Path):
+    """
+    Tests edge case where handbook has no contact directory table or phone numbers.
+    Must extract estate name cleanly without double spacing and provide generic contact footer.
+    """
+    kb_file = tmp_path / "sunset_villas.md"
+    content = """# Sunset Villas Resident Handbook
+
+## 1. General Rules
+Residents must maintain cleanliness in common areas. No dumping of bulky waste.
+
+## 2. Swimming Pool
+Pool hours are 07:00 to 21:00 daily.
+"""
+    kb_file.write_text(content, encoding="utf-8")
+
+    engine = SemanticRAGEngine(kb_path=kb_file)
+    engine.initialize()
+
+    assert engine.estate_name == "Sunset Villas"
+    assert "the Sunset Villas Management Office." in engine.primary_estate_contact
+    assert "  " not in engine.primary_estate_contact
+
+    res = engine.query("What time does the pool close?")
+    assert "Sunset Villas Management Office" in res.answer
+
+
+def test_semantic_rag_international_and_hyphenated_contacts(tmp_path: Path):
+    """
+    Tests edge case where handbook contains international dialing codes (+65, +1),
+    hyphens, brackets, and fax numbers that must be correctly distinguished.
+    """
+    kb_file = tmp_path / "royal_palms.md"
+    content = """# Royal Palms Residences Handbook
+
+## Important Estate Directory
+| Management Office | Tel: | +65 6789-0123 |
+| Management Office | Fax: | +65 6789-9999 |
+| Concierge / Guardhouse | Hotline: | +65 (0) 6888 7766 |
+| Emergency Lift Hotline | Phone: | +1-800-555-0199 |
+
+## 1. Gym Guidelines
+The gym is open 24/7 for residents.
+"""
+    kb_file.write_text(content, encoding="utf-8")
+
+    engine = SemanticRAGEngine(kb_path=kb_file)
+    engine.initialize()
+
+    assert engine.estate_name == "Royal Palms Residences"
+    assert "+65 6789-0123" in engine.primary_estate_contact
+    assert "+65 (0) 6888 7766" in engine.primary_estate_contact
+    # Fax should not be in primary contact
+    assert "+65 6789-9999" not in engine.primary_estate_contact
+
+    res = engine.query("What are the gym hours?")
+    assert "+65 6789-0123" in res.answer or "Royal Palms Residences" in res.answer
+
+

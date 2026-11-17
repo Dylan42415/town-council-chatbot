@@ -483,6 +483,8 @@ class SemanticRAGEngine:
         Dynamically extracts the estate name, primary management office, and guardhouse
         contacts from indexed handbook chunks. Ensures that when an officer amends contact
         numbers in the handbook, all response escalation footers adapt immediately without hardcoding.
+        Handles international/foreign phone formats, hyphenated/bracketed numbers, table alignments,
+        and missing contact directories gracefully.
         """
         full_text = ""
         if self.kb_path.exists() and self.kb_path.is_file():
@@ -499,47 +501,100 @@ class SemanticRAGEngine:
 
         # 1. Dynamically extract estate name
         name_match = re.search(
-            r"#+\s*(?:Welcome\s+to\s+)?([A-Za-z0-9\s]+?)(?:Resident[\'’]?s\s+Handbook|Handbook|Condominium)",
+            r"#+\s*(?:Welcome\s+to\s+)?([A-Za-z0-9\s]+?)\s*(?:Resident[\'’]?s\s+Handbook|Handbook|Condominium\s+Handbook)",
             full_text,
             re.IGNORECASE,
         )
+        candidate_name = ""
         if name_match:
-            self.estate_name = name_match.group(1).strip()
-        elif "tribeca" in full_text[:1500].lower():
-            self.estate_name = "Tribeca Condominium"
+            candidate_name = name_match.group(1).strip()
+            candidate_name = re.sub(r"\bResident[\'’]?s?\b", "", candidate_name, flags=re.I).strip()
+
+        if not candidate_name or candidate_name.lower() in ["condominium", "general", "welcome message"]:
+            m_brief = re.search(r"Brief on\s+([A-Za-z0-9\s]+)", full_text, re.I)
+            if m_brief:
+                candidate_name = m_brief.group(1).strip()
+            elif self.kb_path and self.kb_path.stem:
+                clean_stem = re.sub(r"(?:converted_|_handbook|handbook)", "", self.kb_path.stem, flags=re.I)
+                clean_name = clean_stem.replace("_", " ").strip().title()
+                if clean_name and len(clean_name) > 2:
+                    candidate_name = clean_name
+
+        if candidate_name:
+            self.estate_name = candidate_name
+        else:
+            self.estate_name = "Estate Management"
 
         # 2. Dynamically extract management office and guardhouse contacts
         office_nums: list[str] = []
         guard_nums: list[str] = []
 
+        phone_pattern = re.compile(
+            r"(?:\+?\d{1,3}[\s-]?)?(?:\(?\d{1,4}\)?[\s-]?)?\d{3,4}[\s-]?\d{3,4}\b"
+        )
+
+        def _extract_from_line(line_str: str) -> list[str]:
+            lower_str = line_str.lower()
+            if line_str.startswith("|") and line_str.endswith("|"):
+                cells = [c.strip() for c in line_str.split("|")[1:-1] if c.strip()]
+                label_idx, val_idx = -1, -1
+                for i, c in enumerate(cells):
+                    if any(w in c.lower() for w in ["tel", "fax", "phone", "hotline"]):
+                        label_idx = i
+                    if phone_pattern.search(c):
+                        val_idx = i
+                ext: list[str] = []
+                if label_idx != -1 and val_idx != -1 and label_idx != val_idx:
+                    labels = [l.strip().lower() for l in re.split(r"<br\s*/?>", cells[label_idx])]
+                    values = [v.strip() for v in re.split(r"<br\s*/?>", cells[val_idx])]
+                    for l, v in zip(labels, values):
+                        if "fax" not in l:
+                            for m in phone_pattern.finditer(v):
+                                ext.append(m.group(0).strip())
+                elif val_idx != -1:
+                    for v in re.split(r"<br\s*/?>", cells[val_idx]):
+                        if "fax" not in v.lower():
+                            for m in phone_pattern.finditer(v):
+                                ext.append(m.group(0).strip())
+                return ext
+            else:
+                if "fax" in lower_str and not ("tel" in lower_str or "phone" in lower_str):
+                    return []
+                return [m.group(0).strip() for m in phone_pattern.finditer(line_str)]
+
+        def _clean_num(raw: str) -> str:
+            raw = raw.strip()
+            digits = re.sub(r"\D", "", raw)
+            if len(digits) == 8 and " " not in raw and "-" not in raw and not raw.startswith("+"):
+                return f"{digits[:4]} {digits[4:]}"
+            return raw
+
         for line in full_text.splitlines():
             lower = line.lower()
-            if "management office" in lower and (
-                "tel" in lower or "|" in line or "at" in lower or "call" in lower
-            ):
-                nums = re.findall(r"\b\d{4}\s*\d{4}\b|\b\d{8}\b", line)
-                for n in nums:
-                    clean = re.sub(r"^(\d{4})(\d{4})$", r"\1 \2", n.strip())
-                    if clean not in office_nums and not clean.startswith("6509 6324"):
+            if "management office" in lower:
+                for n in _extract_from_line(line):
+                    clean = _clean_num(n)
+                    if clean not in office_nums:
                         office_nums.append(clean)
             if "guardhouse" in lower or "security post" in lower:
-                nums = re.findall(r"\b\d{4}\s*\d{4}\b|\b\d{8}\b", line)
-                for n in nums:
-                    clean = re.sub(r"^(\d{4})(\d{4})$", r"\1 \2", n.strip())
+                for n in _extract_from_line(line):
+                    clean = _clean_num(n)
                     if clean not in guard_nums:
                         guard_nums.append(clean)
 
         parts: list[str] = []
+        name_prefix = f"{self.estate_name} " if self.estate_name and self.estate_name != "Estate Management" else ""
+
         if office_nums:
             mo_str = " / ".join(office_nums[:2])
-            parts.append(f"the {self.estate_name} Management Office at {mo_str}")
+            parts.append(f"the {name_prefix}Management Office at {mo_str}".strip())
         else:
-            parts.append(f"the {self.estate_name} Management Office")
+            parts.append(f"the {name_prefix}Management Office".strip())
 
         if guard_nums:
-            parts.append(f"Guardhouse at {guard_nums[0]}")
+            parts.append(f"Guardhouse at {guard_nums[0]}".strip())
 
-        self.primary_estate_contact = "Contact " + " or ".join(parts) + "."
+        self.primary_estate_contact = re.sub(r"\s+", " ", "Contact " + " or ".join(parts) + ".").strip()
 
     def initialize(self, force: bool = False) -> None:
         """Loads and indexes the knowledge base."""
@@ -578,7 +633,7 @@ class SemanticRAGEngine:
         contact_triggers = ["contact", "who should", "who to call", "phone", "hotline", "office number", "guardhouse", "contractor"]
         extra_terms = ""
         if any(w in query.lower() for w in contact_triggers):
-            extra_terms = " Useful Contact Numbers Management Office Guardhouse contractor directory"
+            extra_terms = " management office security guardhouse telephone contact directory"
 
         api_key = os.getenv("GEMINI_API_KEY", "").strip()
         if not api_key:
