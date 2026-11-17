@@ -631,7 +631,8 @@ def _deterministic_amendment_fallback(
         # Contextual replacement: if user mentions keywords like "deposit", "fee", "fine"
         lines = updated.splitlines()
         replaced = False
-        target_hints = [t for t in re.findall(r"\b\w+\b", user_intent.lower()) if t in ["deposit", "fee", "fine", "penalty", "parking", "drilling", "clean", "bbq", "unclamping", "car", "pet"]]
+        stopwords = {"the", "a", "an", "and", "or", "to", "for", "in", "of", "on", "from", "with", "is", "be", "change", "update", "set", "can", "please", "make", "increase", "decrease", "reduce"}
+        target_hints = [t for t in re.findall(r"\b\w+\b", user_intent.lower()) if t not in stopwords and len(t) > 2]
         for i, line in enumerate(lines):
             line_l = line.lower()
             if any(hint in line_l for hint in target_hints):
@@ -691,7 +692,12 @@ def apply_amendment_to_handbook(
     current_slice = original_text[section.start_char : section.end_char]
     if current_slice != section.raw_block:
         re_parsed = parse_handbook_sections(original_text)
-        matching = [s for s in re_parsed if s.heading_line == section.heading_line and s.title == section.title]
+        matching = [
+            s for s in re_parsed
+            if s.heading_line == section.heading_line and s.breadcrumb == section.breadcrumb
+        ]
+        if not matching:
+            matching = [s for s in re_parsed if s.heading_line == section.heading_line and s.title == section.title]
         if not matching:
             raise ValueError(
                 f"Handbook content changed concurrently; cannot locate section '{section.title}'. Please refresh."

@@ -33,7 +33,7 @@ async def test_start_and_help_commands():
     await telegram_bot.start_command(update, context)
     update.message.reply_text.assert_awaited_once()
     reply_start = update.message.reply_text.call_args[0][0]
-    assert "Welcome to" in reply_start and ("Tribeca" in reply_start or "Oceanfront" in reply_start)
+    assert "Welcome to" in reply_start and ("Help Desk" in reply_start or "Tribeca" in reply_start or "Oceanfront" in reply_start)
 
     # Test help_command
     update_help = MagicMock()
@@ -41,7 +41,7 @@ async def test_start_and_help_commands():
     await telegram_bot.help_command(update_help, context)
     update_help.message.reply_text.assert_awaited_once()
     reply_help = update_help.message.reply_text.call_args[0][0]
-    assert "Welcome to" in reply_help and ("Tribeca" in reply_help or "Oceanfront" in reply_help)
+    assert "Welcome to" in reply_help and ("Help Desk" in reply_help or "Tribeca" in reply_help or "Oceanfront" in reply_help)
 
 
 @pytest.mark.anyio

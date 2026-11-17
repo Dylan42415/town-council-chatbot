@@ -17,6 +17,7 @@ import logging
 import math
 import os
 import re
+import threading
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -30,6 +31,7 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 DEFAULT_KB_FILE = ROOT / "Knowledge Base" / "converted_tribeca_handbook.md"
 DEFAULT_VAULT_DIR = ROOT / "Knowledge Base" / "vault"
+_RAG_LOCK = threading.RLock()
 
 
 # ============================================================================
@@ -391,11 +393,11 @@ class HybridSemanticIndex:
 
     def index_chunks(self, chunks: list[SemanticChunk]) -> None:
         """Indexes chunks, generating contextual breadcrumb embeddings in batch."""
-        self.chunks = chunks
-        texts_to_embed = [c.embeddable_text for c in self.chunks]
+        texts_to_embed = [c.embeddable_text for c in chunks]
         embeddings = self.embedding_provider.embed_texts(texts_to_embed)
-        for chunk, emb in zip(self.chunks, embeddings):
+        for chunk, emb in zip(chunks, embeddings):
             chunk.embedding = emb
+        self.chunks = chunks
 
     def retrieve(
         self,
@@ -880,11 +882,12 @@ _DEFAULT_SEMANTIC_ENGINE: SemanticRAGEngine | None = None
 
 
 def get_semantic_rag(kb_path: Path | str | None = None) -> SemanticRAGEngine:
-    """Singleton getter for the estate Semantic RAG Engine."""
+    """Singleton getter for the estate Semantic RAG Engine with thread safety."""
     global _DEFAULT_SEMANTIC_ENGINE
-    if _DEFAULT_SEMANTIC_ENGINE is None:
-        _DEFAULT_SEMANTIC_ENGINE = SemanticRAGEngine(kb_path=kb_path)
-        _DEFAULT_SEMANTIC_ENGINE.initialize()
-    elif kb_path and Path(kb_path).resolve() != _DEFAULT_SEMANTIC_ENGINE.kb_path.resolve():
-        _DEFAULT_SEMANTIC_ENGINE.reindex(kb_path)
-    return _DEFAULT_SEMANTIC_ENGINE
+    with _RAG_LOCK:
+        if _DEFAULT_SEMANTIC_ENGINE is None:
+            _DEFAULT_SEMANTIC_ENGINE = SemanticRAGEngine(kb_path=kb_path)
+            _DEFAULT_SEMANTIC_ENGINE.initialize()
+        elif kb_path and Path(kb_path).resolve() != _DEFAULT_SEMANTIC_ENGINE.kb_path.resolve():
+            _DEFAULT_SEMANTIC_ENGINE.reindex(kb_path)
+        return _DEFAULT_SEMANTIC_ENGINE

@@ -120,10 +120,16 @@ def build_triage_system_prompt() -> str:
                         f"- {cat.title()} ({sub}): '{v['vendor_name']}' "
                         f"(Phone: {phone}, SLA: ~{sla} mins)"
                     )
-    v_text = "\n".join(vendor_lines) if vendor_lines else "- Tribeca Management Office (6509 4278 / 6509 9748)"
+    v_text = "\n".join(vendor_lines) if vendor_lines else "- Management Office (Contact details in handbook)"
+
+    try:
+        from condo_classifier.semantic_rag import get_semantic_rag
+        estate_name = get_semantic_rag().estate_name
+    except Exception:
+        estate_name = "Condominium Management"
 
     return (
-        "You are the AI Emergency Coordinator and Triage Agent for Tribeca Condominium.\n"
+        f"You are the AI Emergency Coordinator and Triage Agent for {estate_name}.\n"
         "Assess resident requests (text/photos), classify incidents, and assign vendors.\n\n"
         f"VENDOR DIRECTORY (Loaded dynamically from vendors.json):\n{v_text}\n\n"
         "RULES:\n"
@@ -138,8 +144,14 @@ def generate_work_order_id() -> str:
 
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    try:
+        from condo_classifier.semantic_rag import get_semantic_rag
+        estate_name = get_semantic_rag().estate_name
+    except Exception:
+        estate_name = "Condominium Management"
+
     welcome_text = (
-        "🏢 <b>Welcome to Tribeca Condominium Help Desk</b>\n\n"
+        f"🏢 <b>Welcome to {estate_name} Help Desk</b>\n\n"
         "I am your 24/7 AI Property Coordinator. I help you report issues, request services, "
         "and automatically dispatch on-call contractors for emergencies.\n\n"
         "💡 <b>Commands & Usage:</b>\n"

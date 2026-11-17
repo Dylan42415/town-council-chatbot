@@ -584,6 +584,7 @@ with rag_tab:
             if st.button("🔄 Reset Draft", key="btn_reset_draft"):
                 st.session_state.pop("copilot_proposal", None)
                 st.session_state.pop("copilot_applied_msg", None)
+                st.session_state.pop("copilot_edited_markdown", None)
                 st.rerun()
 
         if draft_clicked and user_intent_input.strip():
@@ -593,6 +594,7 @@ with rag_tab:
                 importlib.reload(pe_mod)
                 from condo_classifier.policy_editor import parse_handbook_sections, locate_target_section, generate_policy_amendment
 
+                st.session_state.pop("copilot_edited_markdown", None)
                 hb_text = active_kb_path.read_text(encoding="utf-8")
                 sections = parse_handbook_sections(hb_text)
                 target_sec, match_score, rationale = locate_target_section(sections, user_intent_input.strip())
@@ -642,6 +644,7 @@ with rag_tab:
             with col_discard:
                 if st.button("❌ Discard", key="btn_discard_draft"):
                     st.session_state.pop("copilot_proposal", None)
+                    st.session_state.pop("copilot_edited_markdown", None)
                     st.rerun()
 
             if apply_clicked:
@@ -662,6 +665,7 @@ with rag_tab:
                             "log_id": record.log_id,
                         }
                         st.session_state.pop("copilot_proposal", None)
+                        st.session_state.pop("copilot_edited_markdown", None)
                         st.rerun()
 
         if "copilot_applied_msg" in st.session_state:

@@ -81,7 +81,7 @@ def build_dispatch_sms(
     priority: str,
     sla_minutes: int,
     passcode: str,
-    condo_name: str = "Tribeca Condominium",
+    condo_name: str = "Condominium Management",
 ) -> str:
     """Constructs the standard contractor dispatch SMS payload."""
     unit_str = unit_number or "Common Area"
@@ -103,15 +103,22 @@ def trigger_auto_dispatch(
     raw_message: str = "",
     unit_number: str | None = None,
     channel: str = "SMS",
-    condo_name: str = "Tribeca Condominium",
+    condo_name: str | None = None,
     db_path: Path | str | None = None,
     assigned_vendor: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Automates vendor routing, guardhouse pass generation, and dispatch persistence."""
+    if not condo_name or condo_name == "Condominium Management":
+        try:
+            from condo_classifier.semantic_rag import get_semantic_rag
+            condo_name = get_semantic_rag().estate_name
+        except Exception:
+            condo_name = "Condominium Management"
+
     vendor = assigned_vendor or resolve_vendor_assignment(category, raw_message)
     vendor_name = vendor.get("vendor_name", "Duty Emergency Contractor")
     phone = vendor.get(
-        "emergency_phone" if priority.lower() == "emergency" else "phone", "+65 6000-0000"
+        "emergency_phone" if priority.lower() == "emergency" else "phone", "Not Provided"
     )
     sla_minutes = vendor.get(
         "emergency_sla_minutes" if priority.lower() == "emergency" else "routine_sla_minutes",
