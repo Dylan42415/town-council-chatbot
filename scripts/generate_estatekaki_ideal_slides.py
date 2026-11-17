@@ -491,31 +491,31 @@ def build_deck():
     )
 
     # =========================================================================
-    # SLIDE 6: Engineering Journey (From Prototype to Production)
+    # SLIDE 6: Lossless Ingestion & Semantic RAG (MarkItDown & Table Preservation)
     # =========================================================================
     s6 = prs.slides.add_slide(layout)
     set_bg(s6)
-    add_header(s6, "Engineering decisions that make it work", "From Prototype to Production", "06 / 08")
+    add_header(s6, "Lossless Ingestion Pipeline & Semantic RAG", "Microsoft MarkItDown & Cross-Page Table Preservation", "06 / 08")
 
-    eng_cards = [
-        ("1. Deterministic-First Safety Screen", YELLOW_ACCENT, [
-            "Why not use an LLM for everything? LLMs have non-zero latency and can be fooled by prompt injection.",
-            "Our pre-LLM safety screen evaluates messages in <5ms using comprehensive regex patterns.",
-            "Emergencies (fires, gas, lift entrapment) trigger instant 995/999 broadcast with zero model risk."
+    rag_cards = [
+        ("1. MarkItDown PDF Ingestion", YELLOW_ACCENT, [
+            "Converts PDF council handbooks into clean Markdown using Microsoft's MarkItDown library.",
+            "Strips raw PDF visual bloat, fonts, and headers, cutting LLM input tokens by >80%.",
+            "Ensures clean markdown structure (#, ##) for fast, deterministic vector indexing."
         ]),
-        ("2. Pydantic Structured Triage Engine", PEACH_ACCENT, [
-            "Resident messages in colloquial Singlish are parsed into strict Pydantic schemas.",
-            "Extracts category, urgency (P1 to P4), affected trade, and exact location.",
-            "Invalid or ungrounded model outputs trigger automatic fallbacks, ensuring reliable database writes."
+        ("2. Cross-Page Table Healing", PEACH_ACCENT, [
+            "Detects sentences and tables split across physical page breaks and auto-heals them.",
+            "100% Table Atomicity Shield: regex protects tables (|---|) from being cut down the middle.",
+            "13 out of 13 tariff and fee tables preserved as indivisible units with zero row/column loss."
         ]),
-        ("3. Human-in-the-Loop Living Policy Copilot", MINT_ACCENT, [
-            "Council by-laws change over time (e.g. updating BBQ deposits or bulky item quotas).",
-            "Staff type plain English updates: 'Increase BBQ deposit to $300'.",
-            "Our copilot surgically modifies the handbook with color-coded GitHub diffs and 1-click instant rollback."
+        ("3. Two-Stage Semantic Chunking", MINT_ACCENT, [
+            "Stage 1: Splits strictly by `#`, `##`, `###` markdown header hierarchy.",
+            "Stage 2: Breaks long sections only at natural sentence meaning shifts (cosine distance).",
+            "Context Breadcrumbs: Stamps every chunk with [Town Council > By-Laws > Facility]."
         ]),
     ]
 
-    for idx, (title, accent, bullets) in enumerate(eng_cards):
+    for idx, (title, accent, bullets) in enumerate(rag_cards):
         left_pos = Inches(0.8 + idx * 4.0)
         add_card(s6, left_pos, Inches(1.6), Inches(3.75), Inches(4.4), CARD_BG)
         add_card(s6, left_pos + Inches(0.2), Inches(1.85), Inches(3.35), Inches(0.4), CARD_ALT)
@@ -535,72 +535,150 @@ def build_deck():
             p.font.size = Pt(11.5)
             p.font.color.rgb = MUTED
 
-    add_card(s6, Inches(0.8), Inches(6.25), Inches(11.75), Inches(0.75), CARD_ALT)
+    add_card(s6, Inches(0.8), Inches(6.25), Inches(11.75), Inches(0.75), CARD_ALT, MINT_ACCENT)
     tb_s6_bot = s6.shapes.add_textbox(Inches(1.0), Inches(6.3), Inches(11.3), Inches(0.65))
-    tb_s6_bot.text_frame.paragraphs[0].text = "🔒 Architectural Rule: AI drafts and classifies; deterministic code protects safety; human estate officers retain final approval."
+    tb_s6_bot.text_frame.paragraphs[0].text = "🎯 Benchmark Audit Across 145 Chunks: 100% RAG Hit Rate @ 3, 0.9222 MRR, 100% table preservation, and 0 hallucinated phone numbers."
     tb_s6_bot.text_frame.paragraphs[0].font.size = Pt(12)
     tb_s6_bot.text_frame.paragraphs[0].font.bold = True
-    tb_s6_bot.text_frame.paragraphs[0].font.color.rgb = MINT_ACCENT
+    tb_s6_bot.text_frame.paragraphs[0].font.color.rgb = WHITE
 
     add_speaker_notes(
         s6,
-        "Behind the scenes, we made three deliberate engineering choices: "
-        "First, we separated life safety from generative AI: emergencies are screened deterministically in 5 milliseconds. "
-        "Second, we enforced Pydantic schemas so messy Singlish is structured into clean database records. "
-        "Third, we built a Human-in-the-Loop Living Policy Copilot so estate managers can update rules via plain language with full visual diffs and instant rollback."
+        "Slide 6 covers our ingestion and Semantic RAG pipeline. "
+        "Standard RAG fails on council documents because tables get sliced in half and PDF formatting wastes tokens. "
+        "We built a three-step solution: "
+        "First, we ingest PDFs with Microsoft MarkItDown, stripping visual bloat and cutting token costs by over 80%. "
+        "Second, we heal sentences and tables split across page transitions, guaranteeing 100% table atomicity. "
+        "Third, our Two-Stage Chunker splits by headers and semantic meaning shifts, tagging each chunk with full breadcrumb context. "
+        "In our benchmark of 145 chunks, we achieved a 100% Hit Rate @ 3 and preserved all 13 fee tables intact."
     )
 
     # =========================================================================
-    # SLIDE 7: The 6 Real Technical Building Blocks (Fact-Checked!)
+    # SLIDE 7: Human-in-the-Loop Living Policy Copilot
     # =========================================================================
     s7 = prs.slides.add_slide(layout)
     set_bg(s7)
-    add_header(s7, "The 6 core technical building blocks", "How We Built EstateKaki", "07 / 08")
+    add_header(s7, "Human-in-the-Loop Policy & By-Law Copilot", "Surgical Living Document Maintenance & Visual Diffs", "07 / 08")
 
-    grid_blocks = [
-        ("Step 1: Emergency Guard", YELLOW_ACCENT, "Deterministic regex pre-filter for life safety (fire, gas leak, lift entrapments, weapons) with zero LLM latency and instant 995/999 hotlines."),
-        ("Step 2: Semantic RAG Engine", MINT_ACCENT, "Automated PDF-to-Markdown ingestion, page-break sentence healing, 100% table atomicity, and hybrid dense vector + BM25 keyword boosting."),
-        ("Step 3: Multimodal Telegram Intake", YELLOW_ACCENT, "python-telegram-bot handling text, Whisper voice memo audio decoding (PyAV), and photo uploads in a guided conversational flow."),
-        ("Step 4: Photo Defect Diagnosis", PEACH_ACCENT, "Gemini Vision API analyzes defect photos, generates concise incident descriptions, and tags severity (P1 Critical to P4 Routine)."),
-        ("Step 5: Trello & Contractor Dispatch", MINT_ACCENT, "Matches faults to 10 term-contractor trades, auto-creates Trello cards with SLA countdown timers, and alerts staff groups."),
-        ("Step 6: Operations Dashboard", PEACH_ACCENT, "Streamlit dashboard (dashboard.py) with ticket triage, image previews, 1-click status updates, and live resident push notifications."),
+    # Left: Officer Flow & Surgical Reconciliation
+    add_card(s7, Inches(0.8), Inches(1.6), Inches(5.7), Inches(4.5), CARD_BG)
+    add_card(s7, Inches(1.0), Inches(1.85), Inches(5.3), Inches(0.4), CARD_ALT)
+    tb_c1_h = s7.shapes.add_textbox(Inches(1.1), Inches(1.87), Inches(5.1), Inches(0.35))
+    tb_c1_h.text_frame.paragraphs[0].text = "NATURAL LANGUAGE BY-LAW AMENDMENT"
+    tb_c1_h.text_frame.paragraphs[0].font.bold = True
+    tb_c1_h.text_frame.paragraphs[0].font.size = Pt(12)
+    tb_c1_h.text_frame.paragraphs[0].font.color.rgb = YELLOW_ACCENT
+
+    # Officer Prompt Box
+    add_card(s7, Inches(1.0), Inches(2.4), Inches(5.3), Inches(0.95), CARD_ALT)
+    tb_pr = s7.shapes.add_textbox(Inches(1.1), Inches(2.43), Inches(5.1), Inches(0.9))
+    tf_pr = tb_pr.text_frame
+    tf_pr.word_wrap = True
+    p_pr1 = tf_pr.paragraphs[0]
+    p_pr1.text = "💬 Officer Natural Language Prompt:"
+    p_pr1.font.bold = True
+    p_pr1.font.size = Pt(10)
+    p_pr1.font.color.rgb = YELLOW_ACCENT
+    p_pr2 = tf_pr.add_paragraph()
+    p_pr2.text = "\"When booking a barbecue pit, Resident shall deposit from $150 to $300\""
+    p_pr2.font.italic = True
+    p_pr2.font.size = Pt(10.5)
+    p_pr2.font.color.rgb = WHITE
+
+    # 3 Bullet highlights
+    tb_c1 = s7.shapes.add_textbox(Inches(1.0), Inches(3.45), Inches(5.3), Inches(2.5))
+    tf_c1 = tb_c1.text_frame
+    tf_c1.word_wrap = True
+    c1_bullets = [
+        ("🎯 AST Clause Targeting: ", "Navigates directly to Recreational Facilities > Barbecue Area (Clause 5), filtering out static application forms."),
+        ("✂️ Surgical Line Reconciliation: ", "Eliminates phantom LLM diffs! Snaps untouched lines back character-for-character."),
+        ("💰 >90% Output Token Reduction: ", "Replaces only the target phrase instead of rewriting the entire 60-line section."),
     ]
+    for i, (head, text) in enumerate(c1_bullets):
+        p = tf_c1.paragraphs[0] if i == 0 else tf_c1.add_paragraph()
+        r1 = p.add_run()
+        r1.text = head
+        r1.font.bold = True
+        r1.font.size = Pt(10.5)
+        r1.font.color.rgb = WHITE
+        r2 = p.add_run()
+        r2.text = text
+        r2.font.size = Pt(10.5)
+        r2.font.color.rgb = MUTED
 
-    for idx, (title, accent, desc) in enumerate(grid_blocks):
-        row = idx // 2
-        col = idx % 2
-        left_pos = Inches(0.8 + col * 6.0)
-        top_pos = Inches(1.6 + row * 1.5)
+    # Right: GitHub-Style Diff & Governance
+    add_card(s7, Inches(6.8), Inches(1.6), Inches(5.75), Inches(4.5), CARD_BG)
+    add_card(s7, Inches(7.0), Inches(1.85), Inches(5.35), Inches(0.4), CARD_ALT)
+    tb_c2_h = s7.shapes.add_textbox(Inches(7.1), Inches(1.87), Inches(5.15), Inches(0.35))
+    tb_c2_h.text_frame.paragraphs[0].text = "GOVERNANCE, AUDIT TRAIL & INSTANT ROLLBACK"
+    tb_c2_h.text_frame.paragraphs[0].font.bold = True
+    tb_c2_h.text_frame.paragraphs[0].font.size = Pt(12)
+    tb_c2_h.text_frame.paragraphs[0].font.color.rgb = PEACH_ACCENT
 
-        add_card(s7, left_pos, top_pos, Inches(5.75), Inches(1.35), CARD_BG, accent)
-        tb_g = s7.shapes.add_textbox(left_pos + Inches(0.2), top_pos + Inches(0.08), Inches(5.35), Inches(1.15))
-        tf_g = tb_g.text_frame
-        tf_g.word_wrap = True
-        p_gt = tf_g.paragraphs[0]
-        p_gt.text = title
-        p_gt.font.bold = True
-        p_gt.font.size = Pt(13)
-        p_gt.font.color.rgb = accent
-        p_gd = tf_g.add_paragraph()
-        p_gd.text = desc
-        p_gd.font.size = Pt(10.5)
-        p_gd.font.color.rgb = WHITE
+    # Visual Diff Box
+    add_card(s7, Inches(7.0), Inches(2.4), Inches(5.35), Inches(1.25), CARD_ALT)
+    tb_df = s7.shapes.add_textbox(Inches(7.1), Inches(2.45), Inches(5.15), Inches(1.15))
+    tf_df = tb_df.text_frame
+    tf_df.word_wrap = True
+    p_df1 = tf_df.paragraphs[0]
+    p_df1.text = "🔍 GitHub-Style Visual Diff Preview:"
+    p_df1.font.bold = True
+    p_df1.font.size = Pt(10.5)
+    p_df1.font.color.rgb = WHITE
 
-    add_card(s7, Inches(0.8), Inches(6.25), Inches(11.75), Inches(0.75), CARD_ALT)
+    p_del = tf_df.add_paragraph()
+    p_del.text = "- 5. When booking BBQ pit, deposit sum of $150.00 per pit..."
+    p_del.font.size = Pt(10)
+    p_del.font.color.rgb = PEACH_ACCENT
+
+    p_add = tf_df.add_paragraph()
+    p_add.text = "+ 5. When booking BBQ pit, deposit sum of $300.00 per pit..."
+    p_add.font.size = Pt(10)
+    p_add.font.color.rgb = MINT_ACCENT
+
+    p_df2 = tf_df.add_paragraph()
+    p_df2.text = "✨ Surgical Output: Exactly +1 Addition, -1 Deletion (0 Spurious Micro-Diffs)"
+    p_df2.font.size = Pt(9.5)
+    p_df2.font.color.rgb = MUTED
+
+    # Governance Bullets
+    tb_gov = s7.shapes.add_textbox(Inches(7.0), Inches(3.8), Inches(5.35), Inches(2.1))
+    tf_gov = tb_gov.text_frame
+    tf_gov.word_wrap = True
+    gov_points = [
+        ("• Automated Backups: ", "Timestamped snapshot taken before any handbook write."),
+        ("• Immutable Audit Log: ", "JSON log stores officer intent, raw prompt, and exact diff."),
+        ("• One-Click Rollback: ", "Instantly restores original rules if an amendment is rescinded."),
+        ("• Hot Vector Re-Indexing: ", "RAG updates immediately with zero server downtime."),
+    ]
+    for i, (head, text) in enumerate(gov_points):
+        p = tf_gov.paragraphs[0] if i == 0 else tf_gov.add_paragraph()
+        r1 = p.add_run()
+        r1.text = head
+        r1.font.bold = True
+        r1.font.size = Pt(10.5)
+        r1.font.color.rgb = WHITE
+        r2 = p.add_run()
+        r2.text = text
+        r2.font.size = Pt(10.5)
+        r2.font.color.rgb = MUTED
+
+    # Bottom Callout
+    add_card(s7, Inches(0.8), Inches(6.25), Inches(11.75), Inches(0.75), CARD_ALT, MINT_ACCENT)
     tb_s7_bot = s7.shapes.add_textbox(Inches(1.0), Inches(6.3), Inches(11.3), Inches(0.65))
-    tb_s7_bot.text_frame.paragraphs[0].text = "🧪 Verified by 305 Automated Tests: Full regression suite covering voice decoding, vision validation, Telegram relay, and RAG table preservation."
+    tb_s7_bot.text_frame.paragraphs[0].text = "🧑‍💼 Full Human Oversight: AI acts strictly as an assistant drafter; Town Council estate officers review visual diffs and approve before changes go live."
     tb_s7_bot.text_frame.paragraphs[0].font.size = Pt(12)
     tb_s7_bot.text_frame.paragraphs[0].font.bold = True
-    tb_s7_bot.text_frame.paragraphs[0].font.color.rgb = MINT_ACCENT
+    tb_s7_bot.text_frame.paragraphs[0].font.color.rgb = WHITE
 
     add_speaker_notes(
         s7,
-        "Here are the six technical building blocks of EstateKaki: "
-        "Step 1 is our regex emergency guard. Step 2 is our Semantic RAG pipeline with 100% table atomicity. "
-        "Step 3 is our multimodal Telegram intake. Step 4 is our computer vision defect diagnosis. "
-        "Step 5 is our automated contractor auto-dispatch engine with SLA countdowns. "
-        "And Step 6 is our Streamlit operations console. "
-        "Every single component is verified by 305 automated test cases passing with zero errors."
+        "Slide 7 presents our Human-in-the-Loop Living Policy Copilot. "
+        "By-laws aren't static; councils frequently update booking fees or deposit rules. "
+        "Instead of manually editing messy text files, estate officers type a plain English instruction: "
+        "'When booking a barbecue pit, Resident shall deposit from $150 to $300'. "
+        "Our AST engine locates the exact clause, performs surgical phrase replacement, and shows a color-coded GitHub diff. "
+        "Officers review and approve the change with 1 click, backed by automated backups, immutable audit logging, and instant rollback."
     )
 
     # =========================================================================
